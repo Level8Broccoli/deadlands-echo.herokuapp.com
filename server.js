@@ -29,7 +29,7 @@ sockjsServer.on('connection', function (conn) {
 var static_directory = new node_static.Server(__dirname);
 
 var server = http.createServer(function(req,res){
-	res.setHeader('Access-Control-Allow-Origin', 'https://deadlands.oliverbucher.com');
+	res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3001/');
 	res.setHeader('Access-Control-Request-Method', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
