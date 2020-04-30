@@ -2,11 +2,11 @@ var http = require('http');
 var sockjs = require('sockjs');
 var node_static = require('node-static');
 
-var user_list = {};
+var connections = {};
 
 function broadcast(message) {
-  for (var user in user_list) {
-    user_list[user].write(JSON.stringify(message));
+  for (var i in connections) {
+    connections[i].write(JSON.stringify(message));
   }
 }
 
@@ -21,10 +21,10 @@ sockjs_echo.on('connection', function (conn) {
   // user_list[conn.id] = conn;
   conn.on('data', function (message) {
     conn.write(message);
-    // broadcast(JSON.parse(message));
+    broadcast(JSON.parse(message));
   });
   // conn.on("close", function () {
-  //   delete user_list[conn.id];
+  //   delete connections[conn.id];
   // })
 });
 
