@@ -32,7 +32,6 @@ var static_directory = new node_static.Server(__dirname);
 
 // 3. Usual http stuff
 var server = http.createServer(function(req,res){
-	// Set CORS headers
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Request-Method', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
