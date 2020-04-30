@@ -6,7 +6,7 @@ var connections = {};
 
 function broadcast(message) {
   for (var i in connections) {
-    connections[i].write(JSON.stringify(message));
+    connections[i].write(message);
   }
 }
 
@@ -18,14 +18,14 @@ var sockjs_opts = {
 
 var sockjs_echo = sockjs.createServer(sockjs_opts);
 sockjs_echo.on('connection', function (conn) {
-  // user_list[conn.id] = conn;
+  connections[conn.id] = conn;
   conn.on('data', function (message) {
     conn.write(message);
-    broadcast(JSON.parse(message));
+    broadcast(message);
   });
-  // conn.on("close", function () {
-  //   delete connections[conn.id];
-  // })
+  conn.on("close", function () {
+    delete connections[conn.id];
+  })
 });
 
 // 2. Static files server
