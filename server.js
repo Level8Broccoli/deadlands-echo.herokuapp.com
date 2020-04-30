@@ -18,13 +18,14 @@ var sockjs_opts = {
 
 var sockjs_echo = sockjs.createServer(sockjs_opts);
 sockjs_echo.on('connection', function (conn) {
-  user_list[conn.id] = conn;
+  // user_list[conn.id] = conn;
   conn.on('data', function (message) {
-    broadcast(JSON.parse(message));
+    conn.write(message);
+    // broadcast(JSON.parse(message));
   });
-  conn.on("close", function () {
-    delete user_list[conn.id];
-  })
+  // conn.on("close", function () {
+  //   delete user_list[conn.id];
+  // })
 });
 
 // 2. Static files server
