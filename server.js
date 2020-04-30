@@ -27,7 +27,7 @@ sockjs_echo.on('connection', function (conn) {
 });
 
 // 2. Static files server
-// var static_directory = new node_static.Server(__dirname);
+var static_directory = new node_static.Server(__dirname);
 
 // 3. Usual http stuff
 var server = http.createServer();
