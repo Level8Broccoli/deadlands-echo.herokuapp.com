@@ -1,24 +1,34 @@
 'use strict';
 
-const express = require('express');
-const { Server } = require('ws');
+const http = require('http');
+const sockjs = require('sockjs');
+const node_static = require('node-static');
 
-const PORT = process.env.PORT || 3000;
-const INDEX = '/index.html';
+// 1. Echo sockjs server
+const sockjs_opts = {
+  prefix: '/echo'
+};
 
-const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
-
-const wss = new Server({ server });
-
-wss.on('connection', (ws) => {
-  console.log('Client connected');
-  ws.on('close', () => console.log('Client disconnected'));
+const sockjs_echo = sockjs.createServer(sockjs_opts);
+sockjs_echo.on('connection', function(conn) {
+  conn.on('data', function(message) {
+    conn.write(message);
+  });
 });
 
-setInterval(() => {
-  wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString());
-  });
-}, 1000);
+// 2. Static files server
+const static_directory = new node_static.Server(__dirname);
+
+// 3. Usual http stuff
+const server = http.createServer();
+server.addListener('request', function(req, res) {
+  static_directory.serve(req, res);
+});
+server.addListener('upgrade', function(req, res) {
+  res.end();
+});
+
+sockjs_echo.attach(server);
+
+console.log(' [*] Listening on 0.0.0.0:9999');
+server.listen(9999, '0.0.0.0');
