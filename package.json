@@ -1,0 +1,23 @@
+{
+  "name": "deadlands.sockjs",
+  "version": "1.0.0",
+  "description": "Description",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Level8Broccoli/websocket.deadlands.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Level8Broccoli/websocket.deadlands/issues"
+  },
+  "homepage": "https://github.com/Level8Broccoli/websocket.deadlands#readme",
+  "dependencies": {
+    "sockjs": "^0.3.20"
+  }
+}
