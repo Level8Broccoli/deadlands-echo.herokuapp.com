@@ -12,8 +12,7 @@ function broadcast(message) {
 
 // 1. Echo sockjs server
 var sockjs_opts = {
-  sockjs_url: "http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js",
-  disable_cors: true
+  sockjs_url: "http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js"
 };
 
 var sockjs_echo = sockjs.createServer(sockjs_opts);
@@ -32,7 +31,9 @@ sockjs_echo.on('connection', function (conn) {
 var static_directory = new node_static.Server(__dirname);
 
 // 3. Usual http stuff
-var server = http.createServer();
+var server = http.createServer(function (req, res) {
+  res.setHeader('Access-Control-Allow-Headers', req.header.origin)
+});
 server.addListener('request', function (req, res) {
   static_directory.serve(req, res);
 });
