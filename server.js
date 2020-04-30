@@ -31,8 +31,17 @@ sockjs_echo.on('connection', function (conn) {
 var static_directory = new node_static.Server(__dirname);
 
 // 3. Usual http stuff
-var server = http.createServer(function (req, res) {
-  res.setHeader('Access-Control-Allow-Headers', req.header.origin)
+var server = http.createServer(function(req,res){
+	// Set CORS headers
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Request-Method', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+	if ( req.method === 'OPTIONS' ) {
+		res.writeHead(200);
+		res.end();
+		return;
+	}
 });
 server.addListener('request', function (req, res) {
   static_directory.serve(req, res);
