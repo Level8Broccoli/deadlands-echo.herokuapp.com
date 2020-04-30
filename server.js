@@ -10,13 +10,12 @@ function broadcast(message) {
   }
 }
 
-// 1. Echo sockjs server
-var sockjs_opts = {
+var sockjsOptions = {
   sockjs_url: "http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js"
 };
 
-var sockjs_echo = sockjs.createServer(sockjs_opts);
-sockjs_echo.on('connection', function (conn) {
+var sockjsServer = sockjs.createServer(sockjsOptions);
+sockjsServer.on('connection', function (conn) {
   connections[conn.id] = conn;
   conn.on('data', function (message) {
     conn.write(message);
@@ -27,10 +26,8 @@ sockjs_echo.on('connection', function (conn) {
   })
 });
 
-// 2. Static files server
 var static_directory = new node_static.Server(__dirname);
 
-// 3. Usual http stuff
 var server = http.createServer(function(req,res){
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Request-Method', '*');
@@ -49,9 +46,10 @@ server.addListener('upgrade', function (req, res) {
   res.end();
 });
 
-sockjs_echo.installHandlers(server, {
+sockjsServer.installHandlers(server, {
   prefix: '/echo'
 });
+
 const port = process.env.PORT || 3000;
 console.log(` [*] Listening on 0.0.0.0:${port}`);
 server.listen(port, '0.0.0.0');
