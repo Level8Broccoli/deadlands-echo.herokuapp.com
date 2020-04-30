@@ -10,5 +10,6 @@ echo.on('connection', function(conn) {
 });
 
 var server = http.createServer();
+const port = process.env.PORT || 3000;
 echo.installHandlers(server, {prefix:'/echo'});
-server.listen(80, '0.0.0.0');
+server.listen(port, '0.0.0.0');
